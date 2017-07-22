@@ -1,0 +1,473 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>ListDll</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <!-- Place favicon.ico in the root directory -->
+
+        <script src="DblLNodeList.js"></script>
+    </head>
+    <body>
+
+    <div style="padding: 10px;">
+        <h1>Double linked list</h1>
+        <h2>Description</h2>
+        <p>Double linked list is composed of two class objects<br>
+        <p>1. DblLNode<br>
+            Simple node class that will hold our data and will have reference to previous and next element.<br>
+            We will use this class to create and add DblLNode element to our list.<br>
+        </p>
+        <p>2. DblLNodeList<br>
+            Class that will hold our head (first) and tail (last) node element<br>
+            All node manipulations and methods will go trough this class object.<br>
+        </p>
+        <p>You can visit this <a href="https://visualgo.net/en/list">link</a> for visual representation <br>
+        </p>
+    </div>
+
+    <div style="padding: 10px;">
+        <h2>List of all Double linked list actions</h2>
+        <div style="padding: 10px;">
+            <button id="init" title="Create list with couple of elements" style="padding: 10px; margin: 10px;">init</button>
+            <button id="create" title="Create and auto add node element!" style="padding: 10px; margin: 10px;">create</button>
+            <button id="push" title="Push node element at the end of the list!" style="padding: 10px; margin: 10px;">push</button>
+            <button id="insert" title="Push node element at the beginning of the list!" style="padding: 10px; margin: 10px;">insert</button>
+            <button id="insertBefore" title="Insert node element before other element!" style="padding: 10px; margin: 10px;">insertBefore</button>
+            <button id="insertAfter" title="Insert node element after other element!" style="padding: 10px; margin: 10px;">insertAfter</button>
+            <button id="insertAt" title="Insert node element at specific index!" style="padding: 10px; margin: 10px;">insertAt</button>
+            <button id="indexOf" title="Index of specific element!" style="padding: 10px; margin: 10px;">indexOf</button>
+            <button id="elementAt" title="Get element at specific index!" style="padding: 10px; margin: 10px;">elementAt</button>
+            <button id="pop" title="Get and remove last element!" style="padding: 10px; margin: 10px;">pop</button>
+            <button id="shift" title="Get and remove first element!" style="padding: 10px; margin: 10px;">shift</button>
+            <button id="remove" title="Remove node element!" style="padding: 10px; margin: 10px;">remove</button>
+            <button id="removeAt" title="Remove element at index" style="padding: 10px; margin: 10px;">removeAt</button>
+            <button id="removeAll" title="Remove all elements" style="padding: 10px; margin: 10px;">removeAll</button>
+            <button id="reverse" title="Reverse elements order" style="padding: 10px; margin: 10px;">reverse</button>
+            <button id="count" title="Total number of elements" style="padding: 10px; margin: 10px;">count</button>
+        </div>
+    </div>
+
+    <div style="padding: 10px; width: 100%; border: 1px inset silver; box-sizing: border-box;">
+        <p>Code example:</p>
+        <code id="code-container" style="padding: 10px; width: 100%; min-height: 100px; box-sizing: border-box;
+        background-color: silver; display: block; border: 1px solid gray;">
+        </code>
+    </div>
+
+    <div style="padding: 10px; width: 100%; border: 1px inset silver; box-sizing: border-box;">
+        <p>Result:</p>
+        <div id="prev-container" style="padding: 10px; width: 100%; min-height: 200px; box-sizing: border-box; display: block;">
+        </div>
+    </div>
+
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.1.0.min.js"><\/script>')</script>
+
+    <script>
+        var dllList = new DblLNodeList();
+
+        function fillNewData() {
+            if (dllList.isEmpty()) {
+                dllList.removeAll();
+                dllList.createBatch(getRandomNumberArray());
+            }
+        }
+
+        $(function () {
+
+            $("#init").on("click", function () {
+                dllList.removeAll();
+                var rndArr = getRandomNumberArray();
+                var rndArrStr = arrToString(rndArr);
+                dllList.createBatch(rndArr)
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'init' */</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Create list object (main list holder)</span></p>" +
+                    "<p><span style='color: blue; font-weight: bold;'>var</span> dllList = " +
+                    "<span style='color: #9C27B0; font-weight: bold;'>new</span> DblLNodeList();</p><br>" +
+                    "<p><span style='color: green; font-style: italic;'>// Create multiple node elements at once by providing array of node data</span></p>" +
+                    "<p>dllList.<span style='color: #FF5722;'>createBatch</span>(" + rndArrStr + ");</p>");
+                $("#prev-container").html(rndArrStr);
+            });
+
+            $("#create").on("click", function () {
+                fillNewData();
+                var rndNumb = rndNumber();
+                var prevArr = arrToString(dllList.toArrayData());
+                dllList.create(rndNumb);
+                var curArr = arrToString(dllList.toArrayData(), dllList.count-1);
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'create' */</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Create node element and add it to the end of the list</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Note: we provide node data!</span></p>" +
+                    "<p>dllList.<span style='color: #FF5722;'>create</span>(<span style='color: red;'>" + rndNumb + "</span>);</p>");
+                $("#prev-container").html(
+                    "<p><span style='color: green; font-style: italic;'>// Result before 'create' method call <span style='color: #000; font-weight: bold;'>" + rndNumb + "</span></span></p>" +
+                    prevArr +
+                    "<p><span style='color: green; font-style: italic;'>// Result after 'create' method call <span style='color: #000; font-weight: bold;'>" + rndNumb + "</span></span></p>" +
+                    curArr
+                );
+            });
+
+            $("#push").on("click", function () {
+                fillNewData();
+                var rndNumb = rndNumber();
+                var prevArr = arrToString(dllList.toArrayData());
+                var node = new DblLNode(rndNumb);
+                dllList.push(node);
+                var curArr = arrToString(dllList.toArrayData(), dllList.count-1);
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'push' */</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Create node element and add it to the end of the list</span></p>" +
+                    "<p><span style='color: blue; font-weight: bold;'>var</span> node = " +
+                    "<span style='color: #9C27B0; font-weight: bold;'>new</span> DblLNode(<span style='color: red;'>" + rndNumb + "</span>);</p><br>" +
+                    "<p><span style='color: green; font-style: italic;'>// Add new node element at the end of the list</span></p>" +
+                    "<p>dllList.<span style='color: #FF5722;'>push</span>(node);</p>");
+                $("#prev-container").html(
+                    "<p><span style='color: green; font-style: italic;'>// Result before 'push' method call <span style='color: #000; font-weight: bold;'>" + rndNumb + "</span></span></p>" +
+                    prevArr +
+                    "<p><span style='color: green; font-style: italic;'>// Result after 'push' method call <span style='color: #000; font-weight: bold;'>" + rndNumb + "</span></span></p>" +
+                    curArr
+                );
+            });
+
+            $("#insert").on("click", function () {
+                fillNewData();
+                var rndNumb = rndNumber();
+                var prevArr = arrToString(dllList.toArrayData());
+                var node = new DblLNode(rndNumb);
+                dllList.insert(node);
+                var curArr = arrToString(dllList.toArrayData(), 0);
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'insert' */</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Create node element and add it to the beginning of the list</span></p>" +
+                    "<p><span style='color: blue; font-weight: bold;'>var</span> node = " +
+                    "<span style='color: #9C27B0; font-weight: bold;'>new</span> DblLNode(<span style='color: red;'>" + rndNumb + "</span>);</p><br>" +
+                    "<p><span style='color: green; font-style: italic;'>// Add new node element at the beginning of the list</span></p>" +
+                    "<p>dllList.<span style='color: #FF5722;'>insert</span>(node);</p>");
+                $("#prev-container").html(
+                    "<p><span style='color: green; font-style: italic;'>// Result before 'insert' method call <span style='color: #000; font-weight: bold;'>" + rndNumb + "</span></span></p>" +
+                    prevArr +
+                    "<p><span style='color: green; font-style: italic;'>// Result after 'insert' method call <span style='color: #000; font-weight: bold;'>" + rndNumb + "</span></span></p>" +
+                    curArr
+                );
+            });
+
+            $("#insertBefore").on("click", function () {
+                fillNewData();
+                var rndNumb = rndNumber();
+                var prevArr = arrToString(dllList.toArrayData());
+                var node = new DblLNode(rndNumb);
+                var rndInsertIndex = rndNumberBtw(1, dllList.count-1);
+                var nodeAtInd = dllList.elementAt(rndInsertIndex);
+                dllList.insertBefore(node, nodeAtInd);
+                var curArr = arrToString(dllList.toArrayData(), rndInsertIndex);
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'insertBefore' */</span></p>" +
+                    "<p><span style='color: green; font-style: italic; font-weight: bold;'>// Create node element and insert it before some other node element</span></p>" +
+                    "<p><span style='color: blue; font-weight: bold;'>var</span> node = " +
+                    "<span style='color: #9C27B0; font-weight: bold;'>new</span> DblLNode(<span style='color: red;'>" + rndNumb + "</span>);</p><br>" +
+                    "<p><span style='color: green; font-style: italic;'>// Add new node element before other element</span></p>" +
+                    "<p>dllList.<span style='color: #FF5722;'>insertBefore</span>(node, nodeBefore);</p>");
+                $("#prev-container").html(
+                    "<p><span style='color: green; font-style: italic;'>// Will insert node " + rndNumb + " before node " + nodeAtInd.data + "</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Result before 'insertBefore' method call <span style='color: #000; font-weight: bold;'>" + nodeAtInd.data + "</span></span></p>" +
+                    prevArr +
+                    "<p><span style='color: green; font-style: italic;'>// Result after 'insertBefore' method call <span style='color: #000; font-weight: bold;'>" + rndNumb + "</span></span></p>" +
+                    curArr
+                );
+            });
+
+            $("#insertAfter").on("click", function () {
+                fillNewData();
+                var rndNumb = rndNumber();
+                var prevArr = arrToString(dllList.toArrayData());
+                var node = new DblLNode(rndNumb);
+                var rndInsertIndex = rndNumberBtw(0, dllList.count-1);
+                var nodeAtInd = dllList.elementAt(rndInsertIndex);
+                dllList.insertAfter(node, nodeAtInd);
+                var curArr = arrToString(dllList.toArrayData(), rndInsertIndex+1);
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'insertAfter' */</span></p>" +
+                    "<p><span style='color: green; font-style: italic; font-weight: bold;'>// Create node element and insert it after some other node element</span></p>" +
+                    "<p><span style='color: blue; font-weight: bold;'>var</span> node = " +
+                    "<span style='color: #9C27B0; font-weight: bold;'>new</span> DblLNode(<span style='color: red;'>" + rndNumb + "</span>);</p><br>" +
+                    "<p><span style='color: green; font-style: italic;'>// Add new node element before other element</span></p>" +
+                    "<p>dllList.<span style='color: #FF5722;'>insertAfter</span>(node, nodeAfter);</p>");
+                $("#prev-container").html(
+                    "<p><span style='color: green; font-style: italic;'>// Will insert node " + rndNumb + " after node " + nodeAtInd.data + "</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Result before 'insertAfter' method call <span style='color: #000; font-weight: bold;'>" + nodeAtInd.data + "</span></span></p>" +
+                    prevArr +
+                    "<p><span style='color: green; font-style: italic;'>// Result after 'insertAfter' method call <span style='color: #000; font-weight: bold;'>" + rndNumb + "</span></span></p>" +
+                    curArr
+                );
+            });
+
+            $("#insertAt").on("click", function () {
+                fillNewData();
+                var rndNumb = rndNumber();
+                var prevArr = arrToString(dllList.toArrayData());
+                var node = new DblLNode(rndNumb);
+                var rndInsertIndex = rndNumberBtw(0, dllList.count-1);
+                var nodeAtInd = dllList.elementAt(rndInsertIndex);
+                dllList.insertAt(node, rndInsertIndex);
+                var curArr = arrToString(dllList.toArrayData(), rndInsertIndex);
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'insertAt' */</span></p>" +
+                    "<p><span style='color: green; font-style: italic; font-weight: bold;'>// Create node element and insert it at specific index</span></p>" +
+                    "<p><span style='color: blue; font-weight: bold;'>var</span> node = " +
+                    "<span style='color: #9C27B0; font-weight: bold;'>new</span> DblLNode(<span style='color: red;'>" + rndNumb + "</span>);</p><br>" +
+                    "<p><span style='color: green; font-style: italic;'>// Add new node element at specific index</span></p>" +
+                    "<p>dllList.<span style='color: #FF5722;'>insertAt</span>(node, <span style='color: red;'>" + rndInsertIndex + "</span>);</p>");
+                $("#prev-container").html(
+                    "<p><span style='color: green; font-style: italic;'>// Will insert node " + rndNumb + " at index " + rndInsertIndex + "</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Result before 'insertAt' method call <span style='color: #000; font-weight: bold;'>" + nodeAtInd.data + "</span></span></p>" +
+                    prevArr +
+                    "<p><span style='color: green; font-style: italic;'>// Result after 'insertAt' method call <span style='color: #000; font-weight: bold;'>" + rndNumb + "</span></span></p>" +
+                    curArr
+                );
+            });
+
+            $("#indexOf").on("click", function () {
+                fillNewData();
+                var arr = arrToString(dllList.toArrayData());
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'indexOf' */</span></p>" +
+                    "<p><span style='color: green; font-style: italic; font-weight: bold;'>// Get index of specific node</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Current node list</span></p>" +
+                    arr);
+                setTimeout(function () {
+                    var nmb = parseInt(prompt("Please enter node number (zero is first number)"));
+                    if (isNaN(nmb)) {
+                        $("#prev-container").html(
+                            "<p><span style='color: red; font-style: italic;'>// Please input valid number!</span></p>"
+                        );
+                    } else {
+                        var nodeAtInd = dllList.elementByData(nmb);
+                        $("#prev-container").html(
+                            "<p><span style='color: green; font-style: italic;'>// Node with number <span style='font-weight: bold'>" + nmb + "</span> is at index <span style='font-weight: bold'>" + dllList.indexOf(nodeAtInd) + "</span></span></p>"
+                        );
+                    }
+                }, 500);
+            });
+
+            $("#elementAt").on("click", function () {
+                fillNewData();
+                var arr = arrToString(dllList.toArrayData());
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'elementAt' */</span></p>" +
+                    "<p><span style='color: green; font-style: italic; font-weight: bold;'>// Get node at specific index</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Current node list</span></p>" +
+                    arr);
+                setTimeout(function () {
+                    var nmb = parseInt(prompt("Please enter index number (zero is first number)"));
+                    if (isNaN(nmb)) {
+                        $("#prev-container").html(
+                            "<p><span style='color: red; font-style: italic;'>// Please input valid index number!</span></p>"
+                        );
+                    } else {
+                        var nodeAtInd = dllList.elementAt(nmb);
+                        $("#prev-container").html(
+                            "<p><span style='color: green; font-style: italic;'>// Node at index <span style='font-weight: bold'>" + nmb + "<span> is <span style='font-weight: bold'>" + (!!nodeAtInd ? nodeAtInd.data : "null") + "</span></span></p>"
+                        );
+                    }
+                }, 500);
+            });
+
+            $("#pop").on("click", function () {
+                fillNewData();
+                var prevArr = arrToString(dllList.toArrayData(), dllList.count-1);
+                var node = dllList.pop();
+                var curArr = arrToString(dllList.toArrayData());
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'pop' */</span></p>" +
+                    "<p><span style='color: green; font-style: italic; font-weight: bold;'>// Remove and return last node (list is changed)</span></p>" +
+                    "<p><span style='color: blue; font-weight: bold;'>var</span> node = " +
+                    "<span style='color: #9C27B0; font-weight: bold;'>dllList.</span><span style='color: #FF5722;;'>pop</span>();</p>");
+                $("#prev-container").html(
+                    "<p><span style='color: green; font-style: italic;'>// Will pop node " + node.data + "</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Result node list before 'pop' method call</span></p>" +
+                    prevArr +
+                    "<p><span style='color: green; font-style: italic;'>// Result list after node 'pop' method call</span></span></p>" +
+                    curArr
+                );
+            });
+
+            $("#shift").on("click", function () {
+                fillNewData();
+                var prevArr = arrToString(dllList.toArrayData(), 0);
+                var node = dllList.shift();
+                var curArr = arrToString(dllList.toArrayData());
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'shift' */</span></p>" +
+                    "<p><span style='color: green; font-style: italic; font-weight: bold;'>// Remove and return first node (list is changed)</span></p>" +
+                    "<p><span style='color: blue; font-weight: bold;'>var</span> node = " +
+                    "<span style='color: #9C27B0; font-weight: bold;'>dllList.</span><span style='color: #FF5722;;'>shift</span>();</p>");
+                $("#prev-container").html(
+                    "<p><span style='color: green; font-style: italic;'>// Will shift node " + node.data + "</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Result node list before 'shift' method call</span></p>" +
+                    prevArr +
+                    "<p><span style='color: green; font-style: italic;'>// Result list after node 'shift' method call</span></span></p>" +
+                    curArr
+                );
+            });
+
+            $("#remove").on("click", function () {
+                fillNewData();
+                var rndInsertIndex = rndNumberBtw(0, dllList.count-1);
+                var prevArr = arrToString(dllList.toArrayData(), rndInsertIndex);
+                var nodeAtInd = dllList.elementAt(rndInsertIndex);
+                dllList.remove(nodeAtInd);
+                var curArr = arrToString(dllList.toArrayData());
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'remove' */</span></p>" +
+                    "<p><span style='color: green; font-style: italic; font-weight: bold;'>// Remove node element: " + nodeAtInd.data + "</span></p>" +
+                    "<p>dllList.<span style='color: #FF5722;'>remove</span>(node);</p>");
+                $("#prev-container").html(
+                    "<p><span style='color: green; font-style: italic;'>// Will remove node " + nodeAtInd.data + "</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Result before 'remove' method call <span style='color: #000; font-weight: bold;'>" + nodeAtInd.data + "</span></span></p>" +
+                    prevArr +
+                    "<p><span style='color: green; font-style: italic;'>// Result after 'remove' method call</span></p>" +
+                    curArr
+                );
+            });
+
+            $("#removeAt").on("click", function () {
+                fillNewData();
+                var arr = arrToString(dllList.toArrayData());
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'removeAt' */</span></p>" +
+                    "<p><span style='color: green; font-style: italic; font-weight: bold;'>// Remove node at specific index</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Current node list</span></p>" +
+                    arr);
+                setTimeout(function () {
+                    var nmb = parseInt(prompt("Please enter index number (zero is first number)"));
+                    if (isNaN(nmb)) {
+                        $("#prev-container").html(
+                            "<p><span style='color: red; font-style: italic;'>// Please input valid index number (zero is first number)!</span></p>"
+                        );
+                    } else {
+                        var prevArr = arrToString(dllList.toArrayData(), nmb);
+                        var nodeAtInd = dllList.removeAt(nmb);
+                        var curArr = arrToString(dllList.toArrayData());
+                        $("#prev-container").html(
+                            "<p><span style='color: green; font-style: italic;'>// Will remove node " + nodeAtInd.data + "</span></p>" +
+                            "<p><span style='color: green; font-style: italic;'>// Result before 'removeAt' method call <span style='color: #000; font-weight: bold;'>" + nodeAtInd.data + "</span></span></p>" +
+                            prevArr +
+                            "<p><span style='color: green; font-style: italic;'>// Result after 'removeAt' method call</span></p>" +
+                            curArr
+                        );
+                    }
+                }, 500);
+            });
+
+            $("#removeAll").on("click", function () {
+                fillNewData();
+                var prevArr = arrToString(dllList.toArrayData());
+                dllList.removeAll();
+                var curArr = arrToString([]);
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'removeAll' */</span></p>" +
+                    "<p>dllList.<span style='color: #FF5722;'>removeAll</span>();</p>");
+                $("#prev-container").html(
+                    "<p><span style='color: green; font-style: italic;'>// Will remove all node elements</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Result before 'removeAll' method call</span></p>" +
+                    prevArr +
+                    "<p><span style='color: green; font-style: italic;'>// Result after 'removeAll' method call</span></p>" +
+                    curArr
+                );
+            });
+
+            $("#reverse").on("click", function () {
+                fillNewData();
+                var prevArr = arrToString(dllList.toArrayData());
+                dllList.reverse();
+                var curArr = arrToString(dllList.toArrayData());
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'reverse' */</span></p>" +
+                    "<p>dllList.<span style='color: #FF5722;'>reverse</span>();</p>");
+                $("#prev-container").html(
+                    "<p><span style='color: green; font-style: italic;'>// Will reverse all node elements</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>// Result before 'reverse' method call</span></p>" +
+                    prevArr +
+                    "<p><span style='color: green; font-style: italic;'>// Result after 'reverse' method call</span></p>" +
+                    curArr
+                );
+            });
+
+            $("#count").on("click", function () {
+                fillNewData();
+                var prevArr = arrToString(dllList.toArrayData());
+                $("#code-container").html(
+                    "<p><span style='color: #598016; font-style: italic;'>/* Action: 'count' */</span></p>" +
+                    "<p>dllList.<span style='color: #FF5722;'>count</span>();</p>");
+                $("#prev-container").html(
+                    "<p><span style='color: green; font-style: italic;'>// Will count node elements</span></p>" +
+                    "<p><span style='color: green; font-style: italic;'>//Node list</span></p>" +
+                    prevArr +
+                    "<p><span style='color: green; font-style: italic;'>// Total node elements: </span></p>" +
+                    dllList.count
+                );
+            });
+
+            $("#init").click();
+        });
+
+        function arrToString (arr, highlightIndex) {
+            var s = "";
+            if (Array.isArray(arr) && arr.length > 0) {
+                s = "["
+                for (var k = 0; k < arr.length; ++k) {
+                    if (k > 0 && k < arr.length) {
+                        s += ", ";
+                    }
+                    if (typeof highlightIndex === "number" && highlightIndex === k) {
+                        s += "<span style='color: #000; font-weight: bold;'>" + arr[k] + "</span>";
+                    } else {
+                        s += "<span style='color: red;'>" + arr[k] + "</span>";
+                    }
+                }
+                s += "]";
+            } else {
+                s = "[]";
+            }
+            return s;
+        }
+
+        function getRandomNumberArray (count) {
+            count = count || 10;
+            for (var a=[],i=0;i<count;++i) a[i]=i;
+            function shuffle(array) {
+                var tmp, current, top = array.length;
+                if(top) while(--top) {
+                    current = Math.floor(Math.random() * (top + 1));
+                    tmp = array[current];
+                    array[current] = array[top];
+                    array[top] = tmp;
+                }
+                return array;
+            }
+            a = shuffle(a);
+            return a;
+        }
+
+        function rndNumber () {
+            return Math.floor(Math.random() * 100) + 1;
+        }
+        function rndNumberBtw (from, to) {
+            return Math.floor(Math.random() * to) + from;
+        }
+    </script>
+
+    </body>
+</html>orange
